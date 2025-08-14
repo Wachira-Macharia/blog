@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -30,5 +32,16 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException("Category with name " + categoryName + " already exists");
         }
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public void deleteCategory(UUID id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isPresent()) {
+            if (!category.get().getPosts().isEmpty()) {
+                throw new IllegalStateException("Category has posts associated with it");
+            }
+            categoryRepository.deleteById(id);
+        }
     }
 }
