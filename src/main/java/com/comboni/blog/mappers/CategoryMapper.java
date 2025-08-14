@@ -2,6 +2,7 @@ package com.comboni.blog.mappers;
 
 import com.comboni.blog.domain.PostStatus;
 import com.comboni.blog.domain.dtos.CategoryDto;
+import com.comboni.blog.domain.dtos.CreateCategoryRequest;
 import com.comboni.blog.domain.entities.Category;
 import com.comboni.blog.domain.entities.Post;
 import org.mapstruct.Mapper;
@@ -16,6 +17,8 @@ public interface CategoryMapper {
 
     @Mapping(target = "postCount" , source = "posts", qualifiedByName = "calculatePostCount")
     CategoryDto toDto(Category category);
+
+    Category toEntity(CreateCategoryRequest createCategoryRequest);
 
     @Named("calculatePostCount")
     default long calculatePostCount(List<Post> posts) {
